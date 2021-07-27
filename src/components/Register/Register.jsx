@@ -1,32 +1,26 @@
 import style from "../Register/Register.module.scss";
 import {Link} from "react-router-dom";
 import {useState} from "react";
-import firebase from './../../firebase'
+import Firebase from './../../firebase'
 
-const Register = () => {
+const Register = (props) => {
 
-    const [name, setName] = useState('');
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
-    const [message, setMessage] = useState('');
 
-    const onChangeName = (e) => {
-        setName(e.target.value);
-    }
     const onChangeEmail = (e) => {
         setEmail(e.target.value);
     }
     const onChangePassword = (e) => {
         setPassword(e.target.value);
     }
-    const onChangeMessage = (e) => {
-        setMessage(e.target.value);
-    }
     const onRegister = async () => {
         try{
-            await firebase.register(name, email, password)
+            await Firebase.register(email, password)
+            props.history.replace('/user')
         } catch(error){
-
+            alert(error.message);
+            props.history.replace('/');
         }
     }
 
@@ -34,12 +28,6 @@ const Register = () => {
         <div className={style.wrapper}>
             <div className={style.form}>
                 <h1>Register</h1>
-                <input
-                    type="text"
-                    placeholder='Full Name*'
-                    value={name}
-                    onChange={onChangeName}
-                />
                 <input
                     type="text"
                     placeholder='Email*'
@@ -51,12 +39,6 @@ const Register = () => {
                     placeholder='Password*'
                     value={password}
                     onChange={onChangePassword}
-                />
-                <input
-                    type="text"
-                    placeholder='Your first message*'
-                    value={message}
-                    onChange={onChangeMessage}
                 />
                 <div className={style.buttons}>
                     <Link to='/login' className={style.loginBtn}>Sign in</Link>

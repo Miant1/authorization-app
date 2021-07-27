@@ -1,9 +1,9 @@
 import style from './Login.module.scss'
-import {Link} from "react-router-dom";
+import {Link, withRouter} from "react-router-dom";
 import {useState} from "react";
-import firebase from './../../firebase'
+import Firebase from './../../firebase'
 
-const Login = () => {
+const Login = (props) => {
 
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('')
@@ -16,7 +16,8 @@ const Login = () => {
     }
     const onLogin = async () => {
         try{
-            await firebase.login(email, password)
+            await Firebase.login(email, password);
+            props.history.replace('/user')
         }catch(error){
             alert(error.message)
         }
@@ -46,4 +47,4 @@ const Login = () => {
     )
 }
 
-export default Login;
+export default withRouter(Login);

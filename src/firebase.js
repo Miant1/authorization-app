@@ -10,13 +10,15 @@ const config = {
     storageBucket: "fir-draly-task.appspot.com",
     messagingSenderId: "563845295922",
     appId: "1:563845295922:web:a584a6a70b5b9af334b12b"
-}
+};
 
 class Firebase {
     constructor() {
         app.initializeApp(config);
         this.auth = app.auth();
         this.db = app.firestore();
+
+
     }
 
     login(email, password) {
@@ -27,10 +29,13 @@ class Firebase {
         return this.auth.signOut();
     }
 
-    async register(name, email, password) {
+    async register(email, password) {
         await this.auth.createUserWithEmailAndPassword(email, password)
-        return this.auth.currentUser.updateProfile({
-            displayName: name
+    }
+
+    isInitialized() {
+        return new Promise(resolve => {
+            this.auth.onAuthStateChanged(resolve)
         })
     }
 }
